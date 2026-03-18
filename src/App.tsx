@@ -216,7 +216,6 @@ export default function App() {
     { id: 'explain', name: 'Explain', icon: <BookOpen className="w-4 h-4" /> },
     { id: 'debug', name: 'Debug', icon: <Zap className="w-4 h-4" /> },
     { id: 'refactor', name: 'Refactor', icon: <Cpu className="w-4 h-4" /> },
-    { id: 'test', name: 'Generate Tests', icon: <Terminal className="w-4 h-4" /> },
   ];
 
   const TARGET_LANG_OPTIONS = [
@@ -344,8 +343,7 @@ export default function App() {
               <span className="hidden sm:inline">
                 {task === 'explain' ? 'Explain Code' : 
                  task === 'debug' ? 'Debug Code' : 
-                 task === 'refactor' ? 'Refactor Code' : 
-                 'Generate Tests'}
+                 'Refactor Code'}
               </span>
             </motion.button>
           </div>

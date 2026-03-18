@@ -61,23 +61,6 @@ async function startServer() {
           ${code}
           \`\`\`
         `;
-      } else if (task === 'test') {
-        prompt = `
-          You are "Unit Test Generator AI".
-          Analyze the following ${language} code and generate comprehensive unit tests.
-          
-          IMPORTANT: You MUST provide the entire response in ${targetLanguage}.
-          
-          Your response MUST follow this structure:
-          1. **Test Strategy**: Briefly explain what cases you are testing (edge cases, happy path, etc.).
-          2. **Unit Test Code**: Provide the test code using a popular framework for ${language} (e.g., Jest for JS/TS, PyTest for Python, JUnit for Java).
-          3. **How to Run**: Provide the command to run these tests.
-          
-          Code to test:
-          \`\`\`${language}
-          ${code}
-          \`\`\`
-        `;
       } else {
         prompt = `
           You are "Code Clarity AI", a beginner-friendly programming assistant.
