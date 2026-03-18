@@ -82,17 +82,19 @@ async function startServer() {
         `;
       }
 
-      const result = await ai.models.generateContent({
+      // Use streaming to reply faster
+      const result = await ai.models.generateContentStream({
         model: model,
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
       });
 
-      const text = result.text;
-      if (text) {
-        res.json({ text });
-      } else {
-        throw new Error("Failed to generate explanation from Gemini.");
+      res.setHeader('Content-Type', 'text/plain');
+      
+      for await (const chunk of result.stream) {
+        const chunkText = chunk.text();
+        res.write(chunkText);
       }
+      res.end();
     } catch (error: any) {
       console.error("Gemini Error:", error);
       const errorStr = error.message || String(error);
