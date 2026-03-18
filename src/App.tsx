@@ -157,10 +157,12 @@ const SUPPORTED_LANGUAGES = [
   { id: 'javascript', name: 'JavaScript' },
   { id: 'typescript', name: 'TypeScript' },
   { id: 'java', name: 'Java' },
+  { id: 'kotlin', name: 'Kotlin' },
   { id: 'cpp', name: 'C++' },
   { id: 'c', name: 'C' },
   { id: 'csharp', name: 'C#' },
   { id: 'php', name: 'PHP' },
+  { id: 'laravel', name: 'Laravel' },
   { id: 'html', name: 'HTML' },
   { id: 'css', name: 'CSS' },
   { id: 'sql', name: 'SQL' },
@@ -200,6 +202,32 @@ const server = http.createServer((req, res) => {
 server.listen(3000, '127.0.0.1', () => {
   console.log('Server running at http://127.0.0.1:3000/');
 });`,
+  kotlin: `fun main() {
+    val message = "Hello from Kotlin!"
+    println(message)
+
+    val items = listOf("Apple", "Banana", "Cherry")
+    for (item in items) {
+        println("Item: $item")
+    }
+}`,
+  laravel: `<?php
+
+namespace App\\Http\\Controllers;
+
+use Illuminate\\Http\\Request;
+use Illuminate\\Support\\Facades\\Route;
+
+class UserController extends Controller
+{
+    public function index()
+    {
+        return response()->json([
+            'message' => 'Hello from Laravel!',
+            'status' => 'success'
+        ]);
+    }
+}`,
 };
 
 export default function App() {
@@ -371,7 +399,7 @@ export default function App() {
             <div className="absolute inset-0 bg-gradient-to-tr from-emerald-50/50 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <Editor
               height="100%"
-              language={language}
+              language={language === 'laravel' ? 'php' : language}
               value={code}
               onChange={(value) => setCode(value || '')}
               theme="vs-light"

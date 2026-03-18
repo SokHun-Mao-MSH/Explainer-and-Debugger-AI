@@ -19,7 +19,6 @@
   - **Explain**: Step-by-step breakdown of code logic.
   - **Debug**: Identification of bugs and provision of fixed code.
   - **Refactor**: Suggestions for improving code quality and best practices.
-  - **Generate Tests**: Automatic creation of unit tests for the provided code.
 - **Gemini Integration**: Integration with `gemini-3-flash-preview` for high-speed, accurate code processing.
 - **Contextual Insights**: The AI provides structured responses based on the selected task.
 - **Language Localization**: Ability to receive responses in different languages (e.g., English, Khmer).
