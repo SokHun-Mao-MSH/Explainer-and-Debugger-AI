@@ -1,14 +1,15 @@
 import express from "express";
 import { createServer as createViteServer } from "vite";
 import path from "path";
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  // Use the PORT environment variable for cloud hosting, default to 3000 for local
+  const PORT = parseInt(process.env.PORT || "3000", 10);
 
   app.use(express.json());
 
@@ -22,8 +23,8 @@ async function startServer() {
         return res.status(500).json({ error: "GEMINI_API_KEY is not configured on the server." });
       }
 
-      const ai = new GoogleGenAI({ apiKey });
-      const model = "gemini-3-flash-preview";
+      const genAI = new GoogleGenerativeAI(apiKey);
+      const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
 
       let prompt = "";
 
@@ -83,10 +84,11 @@ async function startServer() {
       }
 
       // Use streaming to reply faster
-      const result = await ai.models.generateContentStream({
-        model: model,
-        contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      });
+      const result = await model.generateContentStream(prompt);
+
+      if (!result.stream) {
+        throw new Error("No stream was returned from the API. Check model name and API key validity.");
+      }
 
       res.setHeader('Content-Type', 'text/plain');
       
@@ -96,17 +98,21 @@ async function startServer() {
       }
       res.end();
     } catch (error: any) {
-      console.error("Gemini Error:", error);
-      const errorStr = error.message || String(error);
-      let message = "An error occurred on the server.";
-      
-      if (errorStr.includes("429") || errorStr.includes("RESOURCE_EXHAUSTED")) {
-        message = "Rate limit reached. Please try again in a minute.";
-      } else if (errorStr.includes("API key not valid")) {
-        message = "Invalid API key configured on server.";
+      console.error("Gemini API Error:", error);
+      // If headers are already sent, we can't send a new JSON error response.
+      if (res.headersSent) {
+        res.end(); // End the stream abruptly.
+      } else {
+        const errorStr = error.message || String(error);
+        // Default to sending the specific error from the API for better debugging.
+        let message = `An error occurred on the server: ${errorStr}`;
+        if (errorStr.includes("429") || errorStr.includes("RESOURCE_EXHAUSTED")) {
+          message = "Rate limit reached. Please try again in a minute.";
+        } else if (errorStr.includes("API key not valid")) {
+          message = "Invalid API key configured on server.";
+        }
+        res.status(500).json({ error: message });
       }
-      
-      res.status(500).json({ error: message });
     }
   });
 
@@ -126,7 +132,7 @@ async function startServer() {
   }
 
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
   });
 }
 

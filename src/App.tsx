@@ -15,7 +15,7 @@ import {
   Check,
   Info,
   Languages,
-  Search
+  Search,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from './lib/utils';
@@ -68,9 +68,9 @@ function CustomDropdown({ options, value, onChange, icon, className, showSearch 
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           "w-full flex items-center gap-2.5 px-4 py-2 rounded-xl transition-all duration-200 group border text-left outline-none focus:ring-2 focus:ring-emerald-500/20",
-          isOpen 
-            ? "bg-white border-emerald-100 shadow-lg shadow-emerald-100/20 text-emerald-700" 
-            : "bg-slate-50/50 border-transparent hover:bg-white hover:border-slate-200 hover:shadow-sm text-slate-600 hover:text-slate-900"
+          isOpen
+            ? "bg-white border-emerald-100 shadow-lg shadow-emerald-100/20 text-emerald-700"
+            : "bg-white/50 border-transparent hover:bg-white hover:border-slate-200 hover:shadow-sm text-slate-600 hover:text-slate-900"
         )}
       >
         <div className={cn(
@@ -119,8 +119,8 @@ function CustomDropdown({ options, value, onChange, icon, className, showSearch 
                     }}
                     className={cn(
                       "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 mb-0.5 last:mb-0",
-                      value === option.id 
-                        ? "bg-emerald-500 text-white shadow-md shadow-emerald-200" 
+                      value === option.id
+                        ? "bg-emerald-500 text-white shadow-md shadow-emerald-200"
                         : "text-slate-600 hover:bg-slate-50 hover:text-emerald-600"
                     )}
                   >
@@ -162,19 +162,19 @@ function MarkdownCodeBlock({ node, inline, className, children, ...props }: any)
   };
 
   return !inline && match ? (
-    <div className="my-6 rounded-2xl overflow-hidden bg-[#0d1117] border border-slate-200/20 shadow-lg">
-      <div className="flex justify-between items-center px-4 py-2 bg-slate-800/50 text-xs text-slate-400 font-mono">
+    <div className="my-6 rounded-2xl overflow-hidden bg-slate-50 border border-slate-200 shadow-md">
+      <div className="flex justify-between items-center px-4 py-2 bg-slate-100 border-b border-slate-200 text-xs text-slate-500 font-mono">
         <span className="capitalize">{match[1]}</span>
         <button 
           onClick={handleCopy} 
           className="flex items-center gap-1.5 hover:text-white transition-colors"
         >
-          {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+          {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-400 hover:text-slate-600" />}
           {copied ? 'Copied!' : 'Copy'}
         </button>
       </div>
-      <div className="p-4 text-sm overflow-x-auto scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800/0">
-        <pre {...props} style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}>
+      <div className="p-4 text-sm overflow-x-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-transparent">
+        <pre {...props} className="text-slate-800 font-mono" style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}>
           {children}
         </pre>
       </div>

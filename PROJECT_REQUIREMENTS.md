@@ -38,7 +38,7 @@
 ### 4.2 Backend
 - **Runtime**: Node.js
 - **Framework**: Express.js
-- **AI SDK**: `@google/genai`
+- **AI SDK**: `@google/generative-ai`
 - **Environment Management**: `dotenv`
 
 ### 4.3 Infrastructure
