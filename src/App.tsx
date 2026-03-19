@@ -16,6 +16,9 @@ import {
   Info,
   Languages,
   Search,
+  Bug,
+  Wrench,
+  FileText
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from './lib/utils';
@@ -67,21 +70,21 @@ function CustomDropdown({ options, value, onChange, icon, className, showSearch 
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "w-full flex items-center gap-2.5 px-4 py-2 rounded-xl transition-all duration-200 group border text-left outline-none focus:ring-2 focus:ring-emerald-500/20",
+          "w-full flex items-center gap-2.5 px-4 py-2.5 rounded-xl transition-all duration-200 group border text-left outline-none btn-3d",
           isOpen
-            ? "bg-white border-emerald-100 shadow-lg shadow-emerald-100/20 text-emerald-700"
-            : "bg-white/50 border-transparent hover:bg-white hover:border-slate-200 hover:shadow-sm text-slate-600 hover:text-slate-900"
+            ? "bg-white border-slate-900 text-slate-900 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]"
+            : "bg-white border-slate-200 hover:border-slate-400 text-slate-600 shadow-[4px_4px_0px_0px_rgba(226,232,240,1)] active:shadow-none"
         )}
       >
         <div className={cn(
           "transition-colors duration-300",
-          isOpen ? "text-emerald-500" : "text-slate-400 group-hover:text-emerald-500"
+          isOpen ? "text-slate-900" : "text-slate-400 group-hover:text-slate-900"
         )}>
           {icon}
         </div>
-        <span className="text-sm font-bold tracking-tight whitespace-nowrap flex-1">{selectedOption.name}</span>
+        <span className="text-sm font-bold tracking-tight whitespace-nowrap flex-1 truncate">{selectedOption.name}</span>
         <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
-          <Settings2 className="w-4 h-4 text-slate-400" />
+          <Settings2 className="w-4 h-4 text-slate-400 group-hover:text-slate-600" />
         </motion.div>
       </button>
 
@@ -92,7 +95,7 @@ function CustomDropdown({ options, value, onChange, icon, className, showSearch 
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.95 }}
             transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-            className="absolute top-full left-0 right-0 mt-2 min-w-[220px] bg-white/95 backdrop-blur-xl rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-slate-200/60 p-2 z-[100] overflow-hidden"
+            className="absolute top-full left-0 right-0 mt-2 min-w-[220px] bg-white rounded-2xl border-2 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] p-2 z-[100] overflow-hidden"
           >
             {showSearch && (
               <div className="relative mb-2 px-1">
@@ -103,7 +106,7 @@ function CustomDropdown({ options, value, onChange, icon, className, showSearch 
                   placeholder="Search..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-slate-50 border-none rounded-lg py-2 pl-9 pr-3 text-sm focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg py-2 pl-9 pr-3 text-sm text-slate-900 focus:border-emerald-500 outline-none transition-all font-medium"
                 />
               </div>
             )}
@@ -118,10 +121,10 @@ function CustomDropdown({ options, value, onChange, icon, className, showSearch 
                       setIsOpen(false);
                     }}
                     className={cn(
-                      "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 mb-0.5 last:mb-0",
+                      "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 mb-1 last:mb-0",
                       value === option.id
-                        ? "bg-emerald-500 text-white shadow-md shadow-emerald-200"
-                        : "text-slate-600 hover:bg-slate-50 hover:text-emerald-600"
+                        ? "bg-slate-900 text-white shadow-md"
+                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                     )}
                   >
                     {option.icon && (
@@ -137,7 +140,7 @@ function CustomDropdown({ options, value, onChange, icon, className, showSearch 
                   </button>
                 ))
               ) : (
-                <div className="py-8 text-center text-slate-400 text-sm italic">
+                <div className="py-8 text-center text-slate-500 text-sm italic">
                   No results found
                 </div>
               )}
@@ -162,14 +165,14 @@ function MarkdownCodeBlock({ node, inline, className, children, ...props }: any)
   };
 
   return !inline && match ? (
-    <div className="my-6 rounded-2xl overflow-hidden bg-slate-50 border border-slate-200 shadow-md">
+    <div className="my-6 rounded-2xl overflow-hidden bg-slate-50 border border-slate-200 shadow-lg">
       <div className="flex justify-between items-center px-4 py-2 bg-slate-100 border-b border-slate-200 text-xs text-slate-500 font-mono">
         <span className="capitalize">{match[1]}</span>
         <button 
           onClick={handleCopy} 
           className="flex items-center gap-1.5 hover:text-white transition-colors"
         >
-          {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-400 hover:text-slate-600" />}
+          {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5 text-slate-400 hover:text-slate-600" />}
           {copied ? 'Copied!' : 'Copy'}
         </button>
       </div>
@@ -185,6 +188,109 @@ function MarkdownCodeBlock({ node, inline, className, children, ...props }: any)
     </code>
   );
 }
+
+// --- Particle Network Background Component ---
+const ParticleNetworkBackground = () => {
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+
+  React.useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let width = 0;
+    let height = 0;
+    let particles: { x: number; y: number; vx: number; vy: number; size: number }[] = [];
+    let animationFrameId: number;
+    let mouse = { x: -1000, y: -1000 };
+
+    const init = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      particles = [];
+      // Density calculation
+      const particleCount = Math.floor((width * height) / 15000);
+      
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          size: Math.random() * 2 + 1
+        });
+      }
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+
+    const render = () => {
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = '#f8fafc'; // slate-50
+      ctx.fillRect(0, 0, width, height);
+      
+      particles.forEach((p, i) => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > width) p.vx *= -1;
+        if (p.y < 0 || p.y > height) p.vy *= -1;
+
+        // Mouse Interaction
+        const dx = mouse.x - p.x;
+        const dy = mouse.y - p.y;
+        const distMouse = Math.sqrt(dx * dx + dy * dy);
+
+        if (distMouse < 150) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(16, 185, 129, ${0.4 * (1 - distMouse / 150)})`; // Emerald
+          ctx.lineWidth = 1;
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+        }
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = '#94a3b8'; // slate-400
+        ctx.fill();
+
+        // Connect neighbors
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(203, 213, 225, ${0.4 * (1 - dist / 100)})`; // slate-300
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+      });
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    window.addEventListener('resize', init);
+    window.addEventListener('mousemove', handleMouseMove);
+    init();
+    render();
+
+    return () => {
+      window.removeEventListener('resize', init);
+      window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className="fixed inset-0 w-full h-full -z-10 bg-slate-50" />;
+};
 
 // Supported languages from PRD
 const SUPPORTED_LANGUAGES = [
@@ -265,10 +371,55 @@ class UserController extends Controller
 }`,
 };
 
+const TRANSLATIONS = {
+  English: {
+    subtitle: "AI Developer Suite",
+    input: "Input",
+    output: "Output",
+    copy: "Copy",
+    copied: "Copied",
+    analyzing: "Analyzing Logic...",
+    analyzingDesc: "Your AI Assistant is breaking down the code structure for you.",
+    error: "Analysis Interrupted",
+    tryAgain: "Try Again",
+    welcomeTitle: "Code Clarity AI",
+    welcomeDesc: "Select a tool above, paste your code, and let the AI handle the rest.",
+    pasteHint: "Paste code + error (optional)",
+    systemReady: "System Ready",
+    analysisComplete: "Analysis Complete",
+    geminiEngine: "GEMINI ENGINE",
+    tasks: {
+      debug: "Debug & Fix",
+      refactor: "Optimize Code"
+    }
+  },
+  Khmer: {
+    subtitle: "ឈុតឧបករណ៍អ្នកអភិវឌ្ឍន៍ AI",
+    input: "បញ្ចូលកូដ",
+    output: "លទ្ធផល",
+    copy: "ចម្លង",
+    copied: "បានចម្លង",
+    analyzing: "កំពុងវិភាគ...",
+    analyzingDesc: "AI កំពុងបំបែករចនាសម្ព័ន្ធកូដសម្រាប់អ្នក។",
+    error: "ការវិភាគត្រូវបានរំខាន",
+    tryAgain: "ព្យាយាមម្តងទៀត",
+    welcomeTitle: "Code Clarity AI",
+    welcomeDesc: "ជ្រើសរើសឧបករណ៍ខាងលើ បិទភ្ជាប់កូដរបស់អ្នក ហើយឱ្យ AI ដោះស្រាយ។",
+    pasteHint: "បិទភ្ជាប់កូដ + កំហុស (ប្រសិនបើមាន)",
+    systemReady: "ប្រព័ន្ធរួចរាល់",
+    analysisComplete: "ការវិភាគបានបញ្ចប់",
+    geminiEngine: "ម៉ាស៊ីន GEMINI",
+    tasks: {
+      debug: "ជួសជុលកំហុស",
+      refactor: "កែលម្អកូដ"
+    }
+  }
+};
+
 export default function App() {
   const [language, setLanguage] = useState('javascript');
   const [targetLanguage, setTargetLanguage] = useState('English');
-  const [task, setTask] = useState('explain');
+  const [task, setTask] = useState('debug');
   const [code, setCode] = useState(DEFAULT_CODE.javascript);
   const [explanation, setExplanation] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -276,29 +427,25 @@ export default function App() {
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState<'editor' | 'insights'>('editor');
 
+  const t = TRANSLATIONS[targetLanguage as keyof typeof TRANSLATIONS] || TRANSLATIONS.English;
+
   // Configuration for task-specific button styling
   const taskConfig = {
-    explain: {
-      label: 'Explain Code',
-      icon: Sparkles,
-      style: "bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 shadow-lg shadow-emerald-500/20 border-b-[3px] border-emerald-700/20 active:border-b-0 active:translate-y-[3px]"
-    },
     debug: {
-      label: 'Fix Bugs',
-      icon: Zap,
-      style: "bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-400 hover:to-rose-500 shadow-lg shadow-rose-500/20 border-b-[3px] border-rose-700/20 active:border-b-0 active:translate-y-[3px]"
+      label: t.tasks.debug,
+      icon: Bug,
+      style: "bg-[#FF5A5F] border-[#E00007] text-white shadow-[4px_4px_0px_0px_rgba(224,0,7,0.4)] hover:bg-[#FF454A]"
     },
     refactor: {
-      label: 'Optimize Code',
+      label: t.tasks.refactor,
       icon: Cpu,
-      style: "bg-gradient-to-r from-violet-500 to-violet-600 hover:from-violet-400 hover:to-violet-500 shadow-lg shadow-violet-500/20 border-b-[3px] border-violet-700/20 active:border-b-0 active:translate-y-[3px]"
+      style: "bg-[#00D1C1] border-[#009E91] text-white shadow-[4px_4px_0px_0px_rgba(0,158,145,0.4)] hover:bg-[#2CE5D6]"
     }
   };
 
   const TASK_OPTIONS = [
-    { id: 'explain', name: 'Explain', icon: <BookOpen className="w-4 h-4" /> },
-    { id: 'debug', name: 'Debug', icon: <Zap className="w-4 h-4" /> },
-    { id: 'refactor', name: 'Refactor', icon: <Cpu className="w-4 h-4" /> },
+    { id: 'debug', name: t.tasks.debug, icon: <Bug className="w-4 h-4" /> },
+    { id: 'refactor', name: t.tasks.refactor, icon: <Cpu className="w-4 h-4" /> },
   ];
 
   const TARGET_LANG_OPTIONS = [
@@ -356,31 +503,39 @@ export default function App() {
     }
   };
 
-  const activeTaskConfig = taskConfig[task as keyof typeof taskConfig] || taskConfig.explain;
+  const activeTaskConfig = taskConfig[task as keyof typeof taskConfig] || taskConfig.debug;
 
   return (
-    <div className="min-h-screen bg-[#FDFDFD] text-slate-900 font-sans selection:bg-emerald-100">
+    <div className={cn(
+      "min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-emerald-100 selection:text-emerald-900 relative overflow-x-hidden perspective-1000",
+      targetLanguage === 'Khmer' ? "font-khmer" : "font-sans"
+    )}>
+      
+      {/* Particle Network Background Layer */}
+      <ParticleNetworkBackground />
+
       {/* Modern Header */}
-      <header className="sticky top-0 z-50 glass border-b border-slate-200/60">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+      <header className="sticky top-0 z-50 w-full mb-8 transition-all duration-300 border-b border-slate-200/60 bg-white/70 backdrop-blur-xl">
+        <div className="max-w-[1600px] mx-auto h-20 px-6 lg:px-8 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <motion.div 
               whileHover={{ rotate: 5 }}
-              className="w-11 h-11 bg-emerald-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-200/50"
+              whileTap={{ scale: 0.9 }}
+              className="w-11 h-11 bg-slate-900 rounded-xl flex items-center justify-center shadow-lg shadow-slate-900/20"
             >
               <Code2 className="text-white w-6 h-6" />
             </motion.div>
             <div>
-              <h1 className="font-bold text-lg sm:text-xl tracking-tight text-slate-900">Code Clarity</h1>
+              <h1 className="font-black text-xl tracking-tight text-slate-900">CODE CLARITY</h1>
               <div className="hidden sm:flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold">Learning Assistant</p>
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <p className="text-[10px] text-slate-600 uppercase tracking-widest font-bold">{t.subtitle}</p>
               </div>
             </div>
           </div>
           
           <div className="flex items-center gap-3">
-            <div className="hidden lg:flex items-center gap-1 p-1 bg-slate-100/80 rounded-2xl border border-slate-200/60">
+            <div className="hidden lg:flex items-center gap-3 mr-4">
               {/* Task Selector */}
               <CustomDropdown 
                 options={TASK_OPTIONS}
@@ -388,8 +543,6 @@ export default function App() {
                 onChange={setTask}
                 icon={<Zap className="w-4 h-4" />}
               />
-
-              <div className="w-px h-4 bg-slate-200 mx-1" />
 
               {/* Language Selector */}
               <CustomDropdown 
@@ -405,8 +558,6 @@ export default function App() {
                 showSearch={true}
               />
 
-              <div className="w-px h-4 bg-slate-200 mx-1" />
-
               {/* Target Language Selector */}
               <CustomDropdown 
                 options={TARGET_LANG_OPTIONS}
@@ -417,12 +568,12 @@ export default function App() {
             </div>
             
             <motion.button
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ y: -2 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleExplain}
               disabled={isLoading || !code.trim()}
               className={cn(
-                "flex items-center gap-2.5 px-6 py-3 rounded-xl font-bold transition-all duration-200 group text-white",
+                "flex items-center gap-2.5 px-6 py-3 rounded-xl font-black transition-all duration-200 group border-2 btn-3d",
                 activeTaskConfig.style,
                 "disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
               )}
@@ -432,7 +583,7 @@ export default function App() {
               ) : (
                 <activeTaskConfig.icon className="w-5 h-5 drop-shadow-md" />
               )}
-              <span className="hidden sm:inline tracking-wide text-sm">
+              <span className="hidden sm:inline tracking-tight text-sm">
                 {activeTaskConfig.label}
               </span>
             </motion.button>
@@ -440,15 +591,15 @@ export default function App() {
         </div>
       </header>
 
-      <main className="max-w-[1600px] mx-auto p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 h-auto lg:h-[calc(100vh-5rem)]">
+      <main className="flex-1 w-full max-w-[1600px] mx-auto px-4 lg:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 h-auto lg:h-[calc(100vh-8rem)] pb-8">
         {/* Mobile Tab Navigation */}
         <div className="lg:hidden col-span-1">
-          <div className="flex p-1 bg-slate-100/80 backdrop-blur rounded-xl border border-slate-200/60 shadow-sm">
+          <div className="flex p-1 bg-slate-100/80 backdrop-blur rounded-xl border border-slate-200 shadow-sm">
             <button
               onClick={() => setActiveTab('editor')}
               className={cn(
                 "flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-bold transition-all duration-200",
-                activeTab === 'editor' ? "bg-white text-emerald-700 shadow-sm" : "text-slate-500 hover:text-slate-700 hover:bg-slate-200/50"
+                activeTab === 'editor' ? "bg-white text-emerald-600 shadow-sm" : "text-slate-500 hover:text-slate-700 hover:bg-slate-200/50"
               )}
             >
               <Code2 className="w-4 h-4" />
@@ -458,7 +609,7 @@ export default function App() {
               onClick={() => setActiveTab('insights')}
               className={cn(
                 "flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-bold transition-all duration-200",
-                activeTab === 'insights' ? "bg-white text-emerald-700 shadow-sm" : "text-slate-500 hover:text-slate-700 hover:bg-slate-200/50"
+                activeTab === 'insights' ? "bg-white text-emerald-600 shadow-sm" : "text-slate-500 hover:text-slate-700 hover:bg-slate-200/50"
               )}
             >
               <Sparkles className="w-4 h-4" />
@@ -498,24 +649,30 @@ export default function App() {
         {/* Editor Section */}
         <section className={cn(
           "lg:col-span-7 flex flex-col gap-4 transition-all duration-300",
-          activeTab === 'editor' ? "flex h-[calc(100vh-20rem)] lg:h-auto" : "hidden lg:flex lg:h-auto"
+          activeTab === 'editor' ? "flex h-[calc(100vh-20rem)] lg:h-full" : "hidden lg:flex lg:h-full"
         )}>
           <div className="flex items-center justify-between px-2">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-slate-100 rounded-lg">
-                <Code2 className="w-4 h-4 text-slate-600" />
+              <div className="p-2 bg-white/80 backdrop-blur rounded-lg shadow-sm border border-slate-200">
+                <Code2 className="w-4 h-4 text-slate-900" />
               </div>
-              <span className="text-xs font-bold uppercase tracking-widest text-slate-500">Source Editor</span>
+              <span className="text-xs font-black uppercase tracking-widest text-slate-500">{t.input}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="px-2 py-1 bg-slate-100 rounded text-[10px] font-mono font-bold text-slate-500 uppercase">
+              <span className="px-3 py-1 bg-white/80 border border-slate-200 rounded-lg text-[10px] font-mono font-bold text-slate-600 uppercase shadow-sm backdrop-blur-sm">
                 {language}
               </span>
             </div>
           </div>
           
-          <div className="flex-1 rounded-3xl overflow-hidden border border-slate-200/60 bg-white neo-shadow group relative">
-            <div className="absolute inset-0 bg-gradient-to-tr from-emerald-50/50 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="flex-1 min-h-0 card-3d overflow-hidden relative group !bg-white !border-slate-200">
+            {task === 'debug' && (
+              <div className="absolute top-4 right-6 z-10 pointer-events-none opacity-40 group-hover:opacity-100 transition-opacity">
+                <div className="bg-rose-50 text-rose-600 text-xs font-bold px-3 py-1.5 rounded-lg border border-rose-100 shadow-sm transform rotate-2 backdrop-blur-sm">
+                   {t.pasteHint}
+                </div>
+              </div>
+            )}
             <Editor
               height="100%"
               language={language === 'laravel' ? 'php' : language}
@@ -543,14 +700,14 @@ export default function App() {
         {/* Insights Section */}
         <section className={cn(
           "lg:col-span-5 flex flex-col gap-4 transition-all duration-300",
-          activeTab === 'insights' ? "flex h-[calc(100vh-12rem)] lg:h-auto" : "hidden lg:flex lg:h-auto"
+          activeTab === 'insights' ? "flex h-[calc(100vh-12rem)] lg:h-full" : "hidden lg:flex lg:h-full"
         )}>
           <div className="flex items-center justify-between px-2">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-emerald-50 rounded-lg">
-                <BookOpen className="w-4 h-4 text-emerald-600" />
+              <div className="p-2 bg-white/80 backdrop-blur rounded-lg shadow-sm border border-slate-200">
+                <Sparkles className="w-4 h-4 text-emerald-600" />
               </div>
-              <span className="text-xs font-bold uppercase tracking-widest text-slate-500">Assistant Insights</span>
+              <span className="text-xs font-black uppercase tracking-widest text-slate-500">{t.output}</span>
             </div>
             {explanation && (
               <button 
@@ -558,12 +715,12 @@ export default function App() {
                 className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-emerald-600 hover:text-emerald-700 transition-colors"
               >
                 {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                {copied ? 'Copied' : 'Copy'}
+                {copied ? t.copied : t.copy}
               </button>
             )}
           </div>
 
-          <div className="flex-1 rounded-3xl border border-slate-200/60 bg-white neo-shadow overflow-hidden flex flex-col relative">
+          <div className="flex-1 min-h-0 card-3d overflow-hidden flex flex-col relative !bg-white">
             <div className="flex-1 overflow-y-auto p-8 scrollbar-thin">
               <AnimatePresence mode="wait">
                 {isLoading ? (
@@ -580,15 +737,15 @@ export default function App() {
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <h3 className="font-bold text-xl text-slate-800">Analyzing Logic...</h3>
-                      <p className="text-slate-500 text-sm max-w-[240px]">Your AI Assistant is breaking down the code structure for you.</p>
+                      <h3 className="font-bold text-xl text-slate-800">{t.analyzing}</h3>
+                      <p className="text-slate-500 text-sm max-w-[240px]">{t.analyzingDesc}</p>
                     </div>
                   </motion.div>
                 ) : explanation ? (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="prose prose-slate max-w-none prose-headings:font-bold prose-headings:text-slate-800 prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg prose-p:text-slate-600 prose-p:leading-relaxed prose-strong:text-slate-900 prose-blockquote:border-l-4 prose-blockquote:border-emerald-500 prose-blockquote:bg-emerald-50/50 prose-blockquote:p-4 prose-blockquote:rounded-r-lg prose-blockquote:text-slate-700 prose-blockquote:not-italic"
+                    className="prose prose-slate max-w-none prose-headings:font-bold prose-headings:text-slate-800 prose-p:text-slate-600 prose-p:leading-relaxed prose-strong:text-slate-900 prose-blockquote:border-l-4 prose-blockquote:border-emerald-500 prose-blockquote:bg-emerald-50/50 prose-blockquote:p-4 prose-blockquote:rounded-r-lg prose-blockquote:text-slate-700 prose-blockquote:not-italic"
                   >
                     <Markdown components={{ code: MarkdownCodeBlock }}>
                       {explanation}
@@ -600,18 +757,18 @@ export default function App() {
                     animate={{ opacity: 1 }}
                     className="h-full flex flex-col items-center justify-center text-center p-8 gap-4"
                   >
-                    <div className="w-16 h-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center shadow-inner">
+                    <div className="w-16 h-16 bg-rose-50 text-rose-500 rounded-2xl flex items-center justify-center shadow-inner">
                       <Info className="w-8 h-8" />
                     </div>
                     <div className="space-y-2">
-                      <h3 className="font-bold text-red-600 text-lg">Analysis Interrupted</h3>
+                      <h3 className="font-bold text-red-600 text-lg">{t.error}</h3>
                       <p className="text-slate-500 text-sm max-w-xs leading-relaxed">{error}</p>
                     </div>
                     <button 
                       onClick={handleExplain}
                       className="mt-4 px-6 py-2 bg-slate-900 text-white rounded-xl text-sm font-bold hover:bg-slate-800 transition-colors"
                     >
-                      Try Again
+                      {t.tryAgain}
                     </button>
                   </motion.div>
                 ) : (
@@ -620,27 +777,23 @@ export default function App() {
                     animate={{ opacity: 1, scale: 1 }}
                     className="h-full flex flex-col items-center justify-center text-center p-8 gap-6"
                   >
-                    <div className="w-24 h-24 bg-emerald-50 rounded-full flex items-center justify-center border-8 border-emerald-100/60">
-                      <Code2 className="w-12 h-12 text-emerald-500" />
+                    <div className="w-24 h-24 bg-white rounded-3xl flex items-center justify-center shadow-2xl border border-slate-100 rotate-3">
+                      <Code2 className="w-12 h-12 text-slate-900 drop-shadow-sm" />
                     </div>
                     <div className="space-y-2">
-                      <h3 className="font-bold text-2xl text-slate-800">Welcome to Code Clarity</h3>
+                      <h3 className="font-black text-2xl text-slate-900">{t.welcomeTitle}</h3>
                       <p className="text-slate-500 text-sm max-w-xs mx-auto">
-                        Your personal AI learning assistant. Paste code into the editor, select a task, and get instant insights.
+                        {t.welcomeDesc}
                       </p>
                     </div>
                     <div className="flex flex-wrap justify-center items-center gap-3 pt-4 opacity-80">
-                      <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-100/50 rounded-full">
-                        <BookOpen className="w-3.5 h-3.5 text-emerald-600" />
-                        <span className="text-xs font-semibold text-emerald-700">Explain</span>
+                      <div className="flex items-center gap-2 px-3 py-1.5 bg-white/80 border border-slate-100 shadow-sm rounded-lg backdrop-blur-sm">
+                        <Bug className="w-3.5 h-3.5 text-red-500" />
+                        <span className="text-xs font-bold text-slate-700">{t.tasks.debug}</span>
                       </div>
-                      <div className="flex items-center gap-2 px-3 py-1.5 bg-rose-100/50 rounded-full">
-                        <Zap className="w-3.5 h-3.5 text-rose-500" />
-                        <span className="text-xs font-semibold text-rose-700">Debug</span>
-                      </div>
-                      <div className="flex items-center gap-2 px-3 py-1.5 bg-violet-100/50 rounded-full">
-                        <Cpu className="w-3.5 h-3.5 text-violet-500" />
-                        <span className="text-xs font-semibold text-violet-700">Refactor</span>
+                      <div className="flex items-center gap-2 px-3 py-1.5 bg-white/80 border border-slate-100 shadow-sm rounded-lg backdrop-blur-sm">
+                        <Cpu className="w-3.5 h-3.5 text-teal-500" />
+                        <span className="text-xs font-bold text-slate-700">{t.tasks.refactor}</span>
                       </div>
                     </div>
                   </motion.div>
@@ -649,24 +802,42 @@ export default function App() {
             </div>
             
             {/* Modern Footer Status */}
-            <div className="px-8 py-5 bg-slate-50/50 border-t border-slate-100 flex items-center justify-between">
+            <div className="px-8 py-4 bg-white/50 border-t border-slate-100 flex items-center justify-between backdrop-blur-md">
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <div className={cn("w-2.5 h-2.5 rounded-full", explanation ? "bg-emerald-500" : "bg-slate-300")} />
                   {explanation && <div className="absolute inset-0 bg-emerald-500 rounded-full animate-ping opacity-40" />}
                 </div>
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                  {explanation ? "Analysis Complete" : "System Ready"}
+                  {explanation ? t.analysisComplete : t.systemReady}
                 </span>
               </div>
               <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                 <Settings2 className="w-3 h-3" />
-                <span>GEMINI ENGINE</span>
+                <span>{t.geminiEngine}</span>
               </div>
             </div>
           </div>
         </section>
       </main>
+
+      {/* Modern Footer */}
+      <footer className="mt-auto border-t border-slate-200/60 bg-white/80 backdrop-blur-xl z-10">
+        <div className="max-w-[1600px] mx-auto px-6 lg:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center border border-slate-200">
+              <Code2 className="w-4 h-4 text-emerald-600" />
+            </div>
+            <p className="text-sm text-slate-500 font-medium">Built for developers, by developers.</p>
+          </div>
+          
+          <div className="flex items-center gap-8 text-sm font-medium text-slate-500">
+            <button className="hover:text-emerald-600 transition-colors">Privacy Policy</button>
+            <button className="hover:text-emerald-600 transition-colors">Terms of Service</button>
+            <span className="text-slate-600">© 2026 Code Clarity AI</span>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
