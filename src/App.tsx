@@ -189,8 +189,8 @@ function MarkdownCodeBlock({ node, inline, className, children, ...props }: any)
   );
 }
 
-// --- Particle Network Background Component ---
-const ParticleNetworkBackground = () => {
+// --- Galaxy Background Component ---
+const GalaxyBackground = () => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   React.useEffect(() => {
@@ -201,77 +201,63 @@ const ParticleNetworkBackground = () => {
 
     let width = 0;
     let height = 0;
-    let particles: { x: number; y: number; vx: number; vy: number; size: number }[] = [];
+    let stars: { x: number; y: number; z: number; color: string }[] = [];
     let animationFrameId: number;
-    let mouse = { x: -1000, y: -1000 };
+    let mouseX = 0;
 
     const init = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
-      particles = [];
-      // Density calculation
-      const particleCount = Math.floor((width * height) / 15000);
+      stars = [];
+      const numStars = 1500;
       
-      for (let i = 0; i < particleCount; i++) {
-        particles.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.5,
-          size: Math.random() * 2 + 1
+      for (let i = 0; i < numStars; i++) {
+        stars.push({
+          x: (Math.random() - 0.5) * width * 2,
+          y: (Math.random() - 0.5) * height * 2,
+          z: Math.random() * width,
+          // Darker stars for light background
+          color: `hsla(${210 + Math.random() * 30}, 30%, ${40 + Math.random() * 20}%, ${0.5 + Math.random() * 0.5})`
         });
       }
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
+      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
     };
 
     const render = () => {
-      ctx.clearRect(0, 0, width, height);
       ctx.fillStyle = '#f8fafc'; // slate-50
       ctx.fillRect(0, 0, width, height);
       
-      particles.forEach((p, i) => {
-        p.x += p.vx;
-        p.y += p.vy;
+      const cx = width / 2;
+      const cy = height / 2;
 
-        if (p.x < 0 || p.x > width) p.vx *= -1;
-        if (p.y < 0 || p.y > height) p.vy *= -1;
+      const rotSpeed = 0.001 + (mouseX * 0.001);
+      const cos = Math.cos(rotSpeed);
+      const sin = Math.sin(rotSpeed);
 
-        // Mouse Interaction
-        const dx = mouse.x - p.x;
-        const dy = mouse.y - p.y;
-        const distMouse = Math.sqrt(dx * dx + dy * dy);
+      stars.forEach(star => {
+        // Rotation
+        const x = star.x * cos - star.z * sin;
+        const z = star.z * cos + star.x * sin;
+        star.x = x;
+        star.z = z;
 
-        if (distMouse < 150) {
-          ctx.beginPath();
-          ctx.strokeStyle = `rgba(16, 185, 129, ${0.4 * (1 - distMouse / 150)})`; // Emerald
-          ctx.lineWidth = 1;
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(mouse.x, mouse.y);
-          ctx.stroke();
-        }
+        // Projection
+        const fov = width;
+        const scale = fov / (fov + star.z);
+        const x2d = star.x * scale + cx;
+        const y2d = star.y * scale + cy;
+        const size = Math.max(0.1, scale * 3);
+        const opacity = Math.min(1, scale * 1.5);
 
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = '#94a3b8'; // slate-400
+        ctx.fillStyle = star.color;
+        ctx.globalAlpha = opacity;
+        ctx.arc(x2d, y2d, size, 0, Math.PI * 2);
         ctx.fill();
-
-        // Connect neighbors
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-          if (dist < 100) {
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(203, 213, 225, ${0.4 * (1 - dist / 100)})`; // slate-300
-            ctx.lineWidth = 0.5;
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
-          }
-        }
+        ctx.globalAlpha = 1.0;
       });
 
       animationFrameId = requestAnimationFrame(render);
@@ -511,8 +497,8 @@ export default function App() {
       targetLanguage === 'Khmer' ? "font-khmer" : "font-sans"
     )}>
       
-      {/* Particle Network Background Layer */}
-      <ParticleNetworkBackground />
+      {/* 3D Galaxy Background Layer */}
+      <GalaxyBackground />
 
       {/* Modern Header */}
       <header className="sticky top-0 z-50 w-full mb-8 transition-all duration-300 border-b border-slate-200/60 bg-white/70 backdrop-blur-xl">
